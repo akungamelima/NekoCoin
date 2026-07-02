@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Copy, ExternalLink, Menu, X } from "lucide-react";
+import PriceTicker from "@/components/PriceTicker";
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,13 +47,13 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollTo("hero")} data-testid="nav-logo">
             <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 overflow-hidden">
-              <img src="/maneki-neko-coin.png" alt="MNC Logo" className="w-8 h-8 object-cover" />
+              <img src={`${import.meta.env.BASE_URL}maneki-neko-coin.png`} alt="MNC Logo" className="w-8 h-8 object-cover" />
             </div>
             <span className="font-serif text-xl font-bold tracking-wider text-primary">MNC</span>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-6">
               {navLinks.map((link) => (
                 <button
@@ -65,6 +66,7 @@ export default function Home() {
                 </button>
               ))}
             </div>
+            <PriceTicker />
             <Button 
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-full"
               data-testid="nav-buy-btn"
@@ -135,7 +137,7 @@ export default function Home() {
               className="relative w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full glow-gold flex items-center justify-center bg-black"
             >
               <img 
-                src="/maneki-neko-coin.png" 
+                src={`${import.meta.env.BASE_URL}maneki-neko-coin.png`} 
                 alt="Maneki Neko Coin" 
                 className="w-full h-full object-contain drop-shadow-2xl"
               />
@@ -214,7 +216,7 @@ export default function Home() {
             <div className="relative">
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 p-8 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-                <img src="/maneki-neko-coin.png" alt="MNC Coin" className="w-3/4 h-3/4 object-contain opacity-80" />
+                <img src={`${import.meta.env.BASE_URL}maneki-neko-coin.png`} alt="MNC Coin" className="w-3/4 h-3/4 object-contain opacity-80" />
               </div>
             </div>
           </motion.div>
@@ -424,14 +426,22 @@ export default function Home() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl mt-8">
               {[
-                { name: "Telegram", users: "25K+", url: "#" },
-                { name: "Twitter / X", users: "40K+", url: "#" },
+                { name: "Telegram", users: "25K+", url: "https://t.me/+TGa1D1DQmJBjMjRl" },
+                { name: "Twitter / X", users: "40K+", url: "https://x.com/coineko_", founder: true },
                 { name: "Discord", users: "15K+", url: "#" }
               ].map((social, i) => (
-                <a key={i} href={social.url} className="group block" data-testid={`social-link-${social.name.toLowerCase().replace(/ \/ /g, '-')}`}>
-                  <Card className="bg-black/40 border-primary/20 group-hover:border-primary group-hover:bg-primary/10 transition-all h-full">
+                <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="group block" data-testid={`social-link-${social.name.toLowerCase().replace(/ \/ /g, '-')}`}>
+                  <Card className="bg-black/40 border-primary/20 group-hover:border-primary group-hover:bg-primary/10 transition-all h-full relative">
+                    {social.founder && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-background text-xs font-bold px-3 py-1 rounded-full tracking-widest uppercase shadow-lg">
+                        Founder
+                      </div>
+                    )}
                     <CardContent className="p-6 flex flex-col items-center justify-center gap-3 text-center">
                       <div className="text-xl font-bold text-white group-hover:text-primary transition-colors">{social.name}</div>
+                      {social.founder && (
+                        <div className="text-xs text-primary/80 font-mono">@coineko_</div>
+                      )}
                       <div className="text-sm text-foreground/60">{social.users} Members</div>
                       <ExternalLink className="w-4 h-4 text-primary/50 group-hover:text-primary mt-2" />
                     </CardContent>
@@ -439,6 +449,37 @@ export default function Home() {
                 </a>
               ))}
             </div>
+
+            {/* Founder highlight card */}
+            <motion.a
+              href="https://x.com/coineko_"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="group mt-4 w-full max-w-sm mx-auto block"
+              data-testid="founder-x-link"
+            >
+              <Card className="bg-black/60 border-primary/30 group-hover:border-primary group-hover:bg-primary/10 transition-all">
+                <CardContent className="p-5 flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-6 h-6 fill-primary" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-white group-hover:text-primary transition-colors">@coineko_</span>
+                      <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide">Founder</span>
+                    </div>
+                    <div className="text-sm text-foreground/60 mt-0.5">Follow the Founder on X</div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-primary/50 group-hover:text-primary shrink-0" />
+                </CardContent>
+              </Card>
+            </motion.a>
           </motion.div>
         </div>
       </section>
@@ -489,13 +530,16 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
             <div className="flex items-center gap-3">
-              <img src="/maneki-neko-coin.png" alt="MNC Logo" className="w-10 h-10 object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" />
+              <img src={`${import.meta.env.BASE_URL}maneki-neko-coin.png`} alt="MNC Logo" className="w-10 h-10 object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" />
               <span className="font-serif text-2xl font-bold text-white/50">MNC</span>
             </div>
             
             <div className="flex gap-6">
-              <a href="#" className="text-white/50 hover:text-primary transition-colors text-sm font-medium">Telegram</a>
-              <a href="#" className="text-white/50 hover:text-primary transition-colors text-sm font-medium">Twitter</a>
+              <a href="https://t.me/+TGa1D1DQmJBjMjRl" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-primary transition-colors text-sm font-medium">Telegram</a>
+              <a href="https://x.com/coineko_" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-primary transition-colors text-sm font-medium flex items-center gap-1">
+                Twitter
+                <span className="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide leading-none">Founder</span>
+              </a>
               <a href="#" className="text-white/50 hover:text-primary transition-colors text-sm font-medium">DexScreener</a>
               <a href="#" className="text-white/50 hover:text-primary transition-colors text-sm font-medium">CoinGecko</a>
             </div>
